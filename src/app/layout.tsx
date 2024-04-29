@@ -4,7 +4,7 @@ import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 
 import { ThemeProvider } from '@/components/theme/theme-provider';
-import { ThemeToggleButton } from '@/components/theme/theme-toggle-button';
+import { UserRoleContextProvider } from '@/contexts/user-role-context';
 import { cn } from '@/lib/utils';
 
 const fontSans = Inter({ subsets: ['latin'], variable: '--font-sans' });
@@ -33,8 +33,7 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <ThemeToggleButton />
-          {children}
+          <UserRoleContextProvider>{children}</UserRoleContextProvider>
         </ThemeProvider>
       </body>
     </html>
