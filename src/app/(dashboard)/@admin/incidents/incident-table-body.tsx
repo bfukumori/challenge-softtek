@@ -4,15 +4,15 @@ import { TableBody } from '@/components/ui/table';
 import { IncidentTableRow } from './incident-table-row';
 
 export type Incident = {
-  incidentId: string;
+  id: string;
   status: IncidentStatusType;
   description: string;
+  openedBy: string;
   createdAt: Date;
-  userName: string;
   updatedAt: Date;
   resolvedAt: Date | null;
   canceledAt: Date | null;
-  assigneeName: string | null;
+  assignedTo: string | null;
   comments: string | null;
   priority: IncidentPriorityEnum;
 };
@@ -25,7 +25,7 @@ export function IncidentTableBody({ incidents }: IncidentTableBodyProps) {
   return (
     <TableBody>
       {incidents.map((incident) => (
-        <IncidentTableRow key={incident.incidentId} incident={incident} />
+        <IncidentTableRow key={incident.id} incident={incident} />
       ))}
     </TableBody>
   );

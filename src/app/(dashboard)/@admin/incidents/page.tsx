@@ -5,10 +5,33 @@ import { IncidentTableBody } from './incident-table-body';
 import { IncidentTableFilters } from './incident-table-filters';
 import { IncidentTableHeader } from './incident-table-header';
 import { IncidentTableSkeleton } from './incident-table-skeleton';
-import { incidentResults } from './mock';
 
-export default function Incidents() {
+async function fetchIncidents(page: number) {
+  const response = await fetch(
+    `http://localhost:3000/api/incidents?page=${page}`,
+    {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    }
+  );
+
+  if (!response.ok) {
+    throw new Error('Failed to fetch data');
+  }
+
+  return response.json();
+}
+
+export default async function Incidents({
+  searchParams,
+}: {
+  searchParams: { page: string };
+}) {
   const isLoadingIncidents = false;
+  const incidentResults = await fetchIncidents(
+    searchParams.page ? parseInt(searchParams.page) : 1
+  );
 
   return (
     <div className="flex flex-col gap-4 p-4 lg:p-8">

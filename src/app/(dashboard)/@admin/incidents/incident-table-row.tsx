@@ -18,21 +18,12 @@ const actionButtonText = {
 };
 
 export function IncidentTableRow({ incident }: IncidentTableRowProps) {
-  const {
-    incidentId,
-    updatedAt,
-    description,
-    status,
-    priority,
-    assigneeName,
-    userName,
-  } = incident;
+  const { id, updatedAt, description, status, priority, assignedTo, openedBy } =
+    incident;
 
   return (
     <TableRow>
-      <TableCell className="font-mono text-xs font-medium">
-        {incidentId}
-      </TableCell>
+      <TableCell className="font-mono text-xs font-medium">{id}</TableCell>
       <TableCell className="text-muted-foreground">
         {dateFormatter(updatedAt)}
       </TableCell>
@@ -41,8 +32,8 @@ export function IncidentTableRow({ incident }: IncidentTableRowProps) {
         <IncidentStatus status={status} />
       </TableCell>
       <TableCell className="font-medium">{description}</TableCell>
-      <TableCell className="font-medium">{userName}</TableCell>
-      <TableCell className="font-medium">{assigneeName}</TableCell>
+      <TableCell className="font-medium">{openedBy}</TableCell>
+      <TableCell className="font-medium">{assignedTo}</TableCell>
       <TableCell>
         {['open', 'in-analysis'].includes(status) && (
           <Button variant="outline" size="sm" onClick={() => {}}>
