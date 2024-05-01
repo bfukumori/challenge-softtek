@@ -1,37 +1,28 @@
+import { IncidentStatusType } from '@/@types/incidents';
 import { Pagination } from '@/components/custom/pagination';
 import { Table, TableBody } from '@/components/ui/table';
 
+import { fetchIncidents } from './actions/fetch-incidents';
 import { IncidentTableBody } from './incident-table-body';
 import { IncidentTableFilters } from './incident-table-filters';
 import { IncidentTableHeader } from './incident-table-header';
 import { IncidentTableSkeleton } from './incident-table-skeleton';
 
-async function fetchIncidents(page: number) {
-  const response = await fetch(
-    `http://localhost:3000/api/incidents?page=${page}`,
-    {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    }
-  );
-
-  if (!response.ok) {
-    throw new Error('Failed to fetch data');
-  }
-
-  return response.json();
-}
-
 export default async function Incidents({
   searchParams,
 }: {
-  searchParams: { page: string };
+  searchParams: {
+    page: string;
+    status: IncidentStatusType;
+    incidentId: string;
+  };
 }) {
   const isLoadingIncidents = false;
-  const incidentResults = await fetchIncidents(
-    searchParams.page ? parseInt(searchParams.page) : 1
-  );
+  const incidentResults = await fetchIncidents({
+    page: searchParams.page ? searchParams.page : '1',
+    status: searchParams.status,
+    incidentId: searchParams.incidentId,
+  });
 
   return (
     <div className="flex flex-col gap-4 p-4 lg:p-8">
@@ -53,7 +44,7 @@ export default async function Incidents({
           <Pagination
             pageIndex={incidentResults.meta.pageIndex}
             totalCount={incidentResults.meta.totalCount}
-            perPage={incidentResults.meta.perPage}
+            totalPages={incidentResults.meta.totalPages}
           />
         )}
       </div>

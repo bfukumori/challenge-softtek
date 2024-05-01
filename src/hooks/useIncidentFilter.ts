@@ -1,5 +1,5 @@
-'use client';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useCallback } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
@@ -15,41 +15,43 @@ const incidentFiltersSchema = z.object({
 export type IncidentFiltersSchema = z.infer<typeof incidentFiltersSchema>;
 
 export function useIncidentFilter() {
-  const { setSearchParams, searchParams, deleteSearchParams } =
-    useCustomSearchParams();
+  const { setSearchParams, deleteSearchParams } = useCustomSearchParams();
 
-  const incidentId = searchParams.get('incidentId');
-  const status = searchParams.get('status') as IncidentFiltersSchema['status'];
-
-  const { register, control, handleSubmit, reset } =
+  const { register, control, handleSubmit, reset, resetField } =
     useForm<IncidentFiltersSchema>({
       defaultValues: {
-        incidentId: incidentId ?? '',
-        status: status ?? 'all',
+        incidentId: '',
+        status: 'all',
       },
       resolver: zodResolver(incidentFiltersSchema),
     });
 
-  function handleFilter({ incidentId, status }: IncidentFiltersSchema) {
+  async function handleFilter({ incidentId, status }: IncidentFiltersSchema) {
     if (incidentId) {
       setSearchParams('incidentId', incidentId);
+      setSearchParams('page', '1');
+      resetField('incidentId');
+    } else {
+      deleteSearchParams('incidentId');
     }
 
     if (status) {
-      setSearchParams('status', status);
+      setSearchParams('page', '1');
+
+      if (status !== 'all') {
+        setSearchParams('status', status);
+      } else {
+        deleteSearchParams('status');
+      }
     }
   }
 
-  function handleClearFilters() {
+  const handleClearFilters = useCallback(() => {
+    deleteSearchParams('page');
     deleteSearchParams('incidentId');
     deleteSearchParams('status');
-    setSearchParams('page', '1');
-
-    reset({
-      incidentId: '',
-      status: 'all',
-    });
-  }
+    reset();
+  }, [deleteSearchParams, reset]);
 
   return {
     handleClearFilters,
@@ -57,7 +59,5 @@ export function useIncidentFilter() {
     register,
     control,
     handleSubmit,
-    incidentId,
-    status,
   };
 }

@@ -24,9 +24,9 @@ export function IncidentTableFilters() {
     >
       <span>Filtros:</span>
       <Input
+        {...register('incidentId')}
         placeholder="ID do chamado"
         className="h-8 w-auto"
-        {...register('incidentId')}
       />
       <Controller
         name="status"

@@ -11,17 +11,16 @@ import { usePagination } from '@/hooks/usePagination';
 import { Button } from '../ui/button';
 
 type PaginationProps = {
-  pageIndex: number;
   totalCount: number;
-  perPage: number;
+  totalPages: number;
+  pageIndex: number;
 };
 
 export function Pagination({
-  pageIndex,
   totalCount,
-  perPage,
+  totalPages,
+  pageIndex,
 }: PaginationProps) {
-  const totalPages = Math.ceil(totalCount / perPage) || 1;
   const { handlePageChange } = usePagination();
 
   return (
