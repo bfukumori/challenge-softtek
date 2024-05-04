@@ -4,9 +4,9 @@ import {
 } from '@/@types/incidents';
 
 export interface FetchIncidentsParams {
-  page: string;
-  status: IncidentStatusType | '';
-  incidentId: string;
+  page?: string;
+  status?: IncidentStatusType;
+  incidentId?: string;
 }
 
 export async function fetchIncidents(
