@@ -29,7 +29,8 @@ export default function RootLayout({
       >
         <ThemeProvider
           attribute="class"
-          defaultTheme="dark"
+          enableSystem
+          defaultTheme="system"
           disableTransitionOnChange
         >
           <UserRoleContextProvider>{children}</UserRoleContextProvider>
