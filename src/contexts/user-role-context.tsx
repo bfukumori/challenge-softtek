@@ -1,5 +1,5 @@
-'use client';
-import { createContext, ReactNode, useContext, useState } from 'react';
+"use client";
+import { createContext, ReactNode, useContext, useState } from "react";
 
 type UserRoleContextData = {
   role: string;
@@ -9,7 +9,7 @@ type UserRoleContextData = {
 const UserRoleContext = createContext({} as UserRoleContextData);
 
 export function UserRoleContextProvider({ children }: { children: ReactNode }) {
-  const [role, setRole] = useState('admin');
+  const [role, setRole] = useState("user"); //Alterado de ADM para user
 
   return (
     <UserRoleContext.Provider value={{ role, setRole }}>
@@ -22,7 +22,7 @@ export function useRole() {
   const context = useContext(UserRoleContext);
 
   if (!context) {
-    throw new Error('useRole must be used within an UserRoleContextProvider');
+    throw new Error("useRole must be used within an UserRoleContextProvider");
   }
 
   return context;
